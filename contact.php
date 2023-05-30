@@ -67,11 +67,11 @@
           <br>
         </p>
         <p>
-          Phone: 094732721783
+          Phone: 09473236123
         </p>
         <p>
           
-          <p>Email : <a href="mailto:mail@tms.com">markwacko@gmail.com
+          <p>Email : <a href="mailto:mail@tms.com">carrentco@gmail.com
           </a></p>
         </p>
         <p>

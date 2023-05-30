@@ -22,7 +22,7 @@
             $stmt->execute();
                 if($stmt)
                 {
-                    $succ = "Booking Subitted";
+                    $succ = "Booking Submitted";
                 }
                 else 
                 {

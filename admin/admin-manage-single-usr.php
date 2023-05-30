@@ -35,7 +35,8 @@
 <html lang="en">
 
 <?php include('vendor/inc/head.php');?>
-
+<head><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+</head>
 <body id="page-top">
  <!--Start Navigation Bar-->
   <?php include("vendor/inc/nav.php");?>
@@ -129,7 +130,7 @@
                 <input type="password" class="form-control" value="<?php echo $row->u_pwd;?>" name="u_pwd" id="exampleInputPassword1">
             </div>
 
-            <button type="submit" name="update_user" class="btn btn-success">Update User</button>
+            <button type="submit" name="update_user" class="btn btn-success" onclick="showUpdateConfirmation()">Update User</button>
           </form>
           <!-- End Form-->
         <?php }?>
@@ -183,6 +184,26 @@
   <script src="vendor/chart.js/Chart.min.js"></script>
   <script src="vendor/datatables/jquery.dataTables.js"></script>
   <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+  <!-- Sweet alert-->
+  <script>
+    function showUpdateConfirmation() {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to update the user.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // User confirmed the update action
+                // Proceed with the update
+                document.getElementById("updateForm").submit();
+            }
+        });
+    }
+    </script>
 
   <!-- Custom scripts for all pages-->
   <script src="vendor/js/sb-admin.min.js"></script>

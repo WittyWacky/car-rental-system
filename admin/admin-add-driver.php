@@ -107,7 +107,7 @@
             
             <div class="form-group">
                 <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" name="u_email"">
+                <input type="email" class="form-control" name="u_email">
             </div>
 
             <button type="submit" name="add_driver" class="btn btn-success">Add Driver</button>

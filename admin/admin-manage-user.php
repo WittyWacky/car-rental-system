@@ -1,34 +1,34 @@
 <?php
-  session_start();
-  include('vendor/inc/config.php');
-  include('vendor/inc/checklogin.php');
-  check_login();
-  $aid=$_SESSION['a_id'];
+session_start();
+include('vendor/inc/config.php');
+include('vendor/inc/checklogin.php');
+check_login();
+$aid = $_SESSION['a_id'];
 
-  if(isset($_GET['del'])) {
-    $del_id = $_GET['del'];
-    $del_query = "DELETE FROM tms_user WHERE u_id=?";
-    $del_stmt = $mysqli->prepare($del_query);
-    $del_stmt->bind_param('i', $del_id);
-    $del_stmt->execute();
-    $del_stmt->close();
-    header('location: admin-manage-user.php');
-  }
+if (isset($_GET['del'])) {
+  $del_id = $_GET['del'];
+  $del_query = "DELETE FROM tms_user WHERE u_id=?";
+  $del_stmt = $mysqli->prepare($del_query);
+  $del_stmt->bind_param('i', $del_id);
+  $del_stmt->execute();
+  $del_stmt->close();
+  header('location: admin-manage-user.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
-<?php include('vendor/inc/head.php');?>
+<?php include('vendor/inc/head.php'); ?>
 
 <body id="page-top">
 
- <?php include("vendor/inc/nav.php");?>
+  <?php include("vendor/inc/nav.php"); ?>
 
 
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <?php include('vendor/inc/sidebar.php');?>
+    <?php include('vendor/inc/sidebar.php'); ?>
 
     <div id="content-wrapper">
 
@@ -46,7 +46,8 @@
         <div class="card mb-3">
           <div class="card-header">
             <i class="fas fa-users"></i>
-            Registered Users</div>
+            Registered Users
+          </div>
           <div class="card-body">
             <div class="table-responsive">
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -62,44 +63,49 @@
                 </thead>
                 <?php
 
-                    $ret="SELECT * FROM tms_user WHERE u_category = 'User' ORDER BY RAND() LIMIT 1000 "; //sql code to get to ten trains randomly
-                    $stmt= $mysqli->prepare($ret) ;
-                    $stmt->execute() ;//ok
-                    $res=$stmt->get_result();
-                    $cnt=1;
-                    while($row=$res->fetch_object())
-                {
+                $ret = "SELECT * FROM tms_user WHERE u_category = 'User' ORDER BY RAND() LIMIT 1000 "; //sql code to get to ten trains randomly
+                $stmt = $mysqli->prepare($ret);
+                $stmt->execute(); //ok
+                $res = $stmt->get_result();
+                $cnt = 1;
+                while ($row = $res->fetch_object()) {
                 ?>
-                <tbody>
-                  <tr>
-                    <td><?php echo $cnt;?></td>
-                    <td><?php echo $row->u_fname;?> <?php echo $row->u_lname;?></td>
-                    <td><?php echo $row->u_phone;?></td>
-                    <td><?php echo $row->u_addr;?></td>
-                    <td><?php echo $row->u_email;?></td>
-                    <td>
-                      <a href="admin-manage-single-usr.php?u_id=<?php echo $row->u_id;?>" class="badge badge-success"><i class="fa fa-user-edit"></i> Update</a>
-                      <a href="admin-manage-user.php?del=<?php echo $row->u_id;?>" class="badge badge-danger"><i class="fa fa-trash"></i> Delete</a>
-                    </td>
-                  </tr>
-                </tbody>
-                <?php $cnt = $cnt+1; }?>
+                  <tbody>
+                    <tr>
+                      <td><?php echo $cnt; ?></td>
+                      <td><?php echo $row->u_fname; ?> <?php echo $row->u_lname; ?></td>
+                      <td><?php echo $row->u_phone; ?></td>
+                      <td><?php echo $row->u_addr; ?></td>
+                      <td><?php echo $row->u_email; ?></td>
+                      <td>
+                        <a href="admin-manage-single-usr.php?u_id=<?php echo $row->u_id; ?>" class="badge badge-success" onclick="return confirm('Are you sure you want to update this user?');">
+                          <i class="fa fa-user-edit"></i> Update
+                        </a>
+
+                        <a href="admin-manage-user.php?del=<?php echo $row->u_id; ?>" class="badge badge-danger" onclick="return confirm('Are you sure you want to delete this user?');">
+                          <i class="fa fa-trash"></i> Delete
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                <?php $cnt = $cnt + 1;
+                } ?>
 
               </table>
             </div>
           </div>
           <div class="card-footer small text-muted">
-          <?php
-              date_default_timezone_set("Asia/Manila");
-              echo "Generated : " . date("h:i:sa");
-            ?> 
+            <?php
+            date_default_timezone_set("Asia/Manila");
+            echo "Generated : " . date("h:i:sa");
+            ?>
           </div>
         </div>
       </div>
       <!-- /.container-fluid -->
 
       <!-- Sticky Footer -->
-      <?php include("vendor/inc/footer.php");?>
+      <?php include("vendor/inc/footer.php"); ?>
     </div>
     <!-- /.content-wrapper -->
 
