@@ -25,7 +25,7 @@
     <!-- Intro Content -->
     <div class="row">
       <div class="col-lg-6">
-        <img class="img-fluid rounded mb-4" style="height: 400px;" src="vendor/img/car3.jpg" alt="">
+        <img class="img-fluid rounded mb-4" style="height: 400px;" src="vendor/img/ferarri.jpg" alt="">
       </div>
       <div class="col-lg-6">
         <h2>About Us</h2>

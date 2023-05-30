@@ -1,44 +1,29 @@
 <!--Server Side Scripting Language to inject login code-->
 <?php
-session_start();
-include('vendor/inc/config.php');
+  session_start();
+  include('vendor/inc/config.php');
 
-if (isset($_POST['login'])) {
-  $u_email = $_POST['u_email'];
-  $u_pwd = md5($_POST['u_pwd']); // hash the password using MD5
+  if (isset($_POST['login'])) {
+    $u_email = $_POST['u_email'];
+    $u_pwd = $_POST['u_pwd'];
 
-  // Establish database connection
-  $dbHost = 'localhost';
-  $dbUsername = 'root';
-  $dbPassword = '';
-  $dbName = 'vehiclebookings';
+    $stmt = $mysqli->prepare("SELECT u_id, u_email, u_pwd FROM tms_user WHERE u_email = ?");
+    $stmt->bind_param('s', $u_email);
+    $stmt->execute();
+    $stmt->bind_result($u_id, $u_email, $hashed_password);
+    $stmt->fetch();
+    $stmt->close();
 
-  $mysqli = new mysqli($dbHost, $dbUsername, $dbPassword, $dbName);
-  if ($mysqli->connect_error) {
-    die("Connection failed: " . $mysqli->connect_error);
-  }
-
-  // Prepare and execute the SQL query
-  $stmt = $mysqli->prepare("SELECT u_id, u_email FROM tms_user WHERE u_email = ?");
-  $stmt->bind_param('s', $u_email);
-  $stmt->execute();
-  $stmt->bind_result($u_id, $u_email);
-  $stmt->fetch();
-  $stmt->close();
-
-  // Verify the password
-  if ($u_id) {
-    $_SESSION['u_id'] = $u_id;
-    $_SESSION['login'] = $u_email;
-    header("location: user-dashboard.php");
-    exit();
-  } else {
-    $error = "Invalid email or password.";
-  }
-
-  $mysqli->close();
+    // Verify the password
+    if ($hashed_password && password_verify($u_pwd, $hashed_password)) {
+        $_SESSION['u_id'] = $u_id;
+        $_SESSION['login'] = $u_email;
+        header("location: user-dashboard.php");
+        exit();
+    } else {
+        $error = "Invalid email or password.";
+    }
 }
-
 ?>
 <!--End Server Side Script Injection-->
 <!DOCTYPE html>
@@ -70,33 +55,34 @@ if (isset($_POST['login'])) {
       <div class="card-body">
         <!--INJECT SWEET ALERT-->
         <!--Trigger Sweet Alert-->
-        <?php if (isset($error)) { ?>
+          <?php if(isset($error)) {?>
           <!--This code for injecting an alert-->
-          <script>
-            setTimeout(function() {
-                swal("Failed!", "<?php echo $error; ?>!", "error");
-              },
-              100);
-          </script>
-
-        <?php } ?>
-        <form method="POST">
+              <script>
+                    setTimeout(function () 
+                    { 
+                      swal("Failed!","<?php echo $error;?>!","error");
+                    },
+                      100);
+              </script>
+                  
+          <?php } ?>
+        <form method ="POST">
           <div class="form-group">
             <div class="form-label-group">
-              <input type="email" name="u_email" id="inputEmail" class="form-control" required="required" autofocus="autofocus">
+              <input type="email" name="u_email" id="inputEmail" class="form-control"  required="required" autofocus="autofocus">
               <label for="inputEmail">Email address</label>
             </div>
           </div>
           <div class="form-group">
             <div class="form-label-group">
-              <input type="password" name="u_pwd" id="inputPassword" class="form-control" required="required">
+              <input type="password" name="u_pwd" id="inputPassword" class="form-control"  required="required">
               <label for="inputPassword">Password</label>
             </div>
           </div>
           <input type="submit" name="login" class="btn btn-success btn-block" value="Login">
         </form>
         <div class="text-center">
-          <a class="d-block small mt-3" style="font-weight: bold" href="usr-forgot-pwd.php">Forgot Password?</a>
+          <a class="d-block small mt-3" style="font-weight: bold" href="usr-forgot-pwd.php">Forget Password?</a>
           <a class="d-block small" style="font-weight: bold" href="usr-register.php">Register an Account</a>
         </div>
       </div>
@@ -110,7 +96,7 @@ if (isset($_POST['login'])) {
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <!--INject Sweet alert js-->
-  <script src="vendor/js/swal.js"></script>
+ <script src="vendor/js/swal.js"></script>
 
 </body>
 

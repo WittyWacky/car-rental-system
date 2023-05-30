@@ -9,21 +9,83 @@ include('admin/vendor/inc/config.php');
 <head>
   <?php include("vendor/inc/head.php"); ?>
   <style>
-    .carousel-indicators {
-      bottom: -25px;
+    /* New background style */
+    body {
+      background: url('./vendor/img/bgimage.jpg') no-repeat center center fixed;
+      background-size: cover;
     }
 
-    .carousel-indicators li {
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.5);
-      border: none;
-      margin: 0 5px;
+    /* Overlay style */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: -1;
     }
 
-    .carousel-indicators .active {
-      background-color: #fff;
+    /* Centered text style */
+    .centered-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: fantasy;
+      font-size: 36px;
+      color: #ffffff;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      z-index: 1;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 2px solid #ffffff;
+    }
+
+    /* Arrow button style */
+    .arrow-button {
+      position: absolute;
+      top: calc(50% + 70px);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      cursor: pointer;
+    }
+
+    /* Arrow color */
+    .arrow-button svg {
+      stroke: #ffffff;
+    }
+
+    /* Content container style */
+    .content-container {
+      margin-top: 100px;
+      padding: 20px;
+      background-color: #ffffff;
+      border: 2px solid #000000;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      .centered-text {
+        font-size: 24px;
+      }
+
+      .arrow-button {
+        top: calc(50% + 40px);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .centered-text {
+        font-size: 18px;
+        padding: 10px;
+      }
+
+      .arrow-button {
+        top: calc(50% + 20px);
+      }
     }
   </style>
 </head>
@@ -33,101 +95,33 @@ include('admin/vendor/inc/config.php');
   <!-- Navigation -->
   <?php include("vendor/inc/nav.php"); ?>
 
-  <!-- Header -->
-  <header>
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-      <ol class="carousel-indicators">
-        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-      </ol>
-      <div class="carousel-inner" role="listbox">
-        <div class="carousel-item active" style="background-image: url('vendor/img/banner.png'); height: 650px;"></div>
-        <div class="carousel-item" style="background-image: url('vendor/img/banner2.jpg'); height: 650px;"></div>
-      </div>
-    </div>
-  </header>
-
   <!-- Page Content -->
   <div class="container">
-
-    <h1 class="my-4 text-center mt-5" style="font-family:fantasy">Welcome to Car Rental System</h1>
-
-    <!-- Features Section -->
-    <div class="row mt-5">
-      <div class="col-lg-6 mb-4">
-        <div class="card h-100">
-          <h4 class="card-header text-center">Why Choose Us</h4>
-          <div class="card-body">
-            <p class="card-text">We have a team of highly skilled and professional drivers, ready to serve you with excellence.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6 mb-4">
-        <div class="card h-100">
-          <h4 class="card-header text-center">Core Values</h4>
-          <div class="card-body">
-            <p class="card-text">We believe in simplicity, trust, and providing the best customer experience.</p>
-          </div>
-        </div>
-      </div>
+    <div class="centered-text">
+      <h1>Welcome to Car Rental System</h1>
     </div>
 
-    <hr>
-
-    <!-- Portfolio Section -->
-    <h2 class="text-center mt-5 mb-3">Most Hired Vehicles</h2>
-    <hr>
-    <div class="row">
-      <div class="col-lg-4 col-sm-6 portfolio-item">
-        <div class="card h-100">
-          <a href="gallery.php"><img class="card-img-top" src="vendor/img/vios.jpg" alt=""></a>
-        </div>
-      </div>
-      <div class="col-lg-4 col-sm-6 portfolio-item">
-        <div class="card h-100">
-          <a href="gallery.php"><img class="card-img-top" style="height: 218px;" src="vendor/img/subaru.jpg" alt=""></a>
-        </div>
-      </div>
-      <div class="col-lg-4 col-sm-6 portfolio-item">
-        <div class="card h-100">
-          <a href="gallery.php"><img class="card-img-top" style="height: 218px;" src="vendor/img/toyota.jpg" alt=""></a>
-        </div>
-      </div>
+    <div class="arrow-button">
+      <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-down-circle" onclick="scrollToContent()">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="8 12 12 16 16 12"></polyline>
+        <line x1="12" y1="8" x2="12" y2="16"></line>
+      </svg>
     </div>
-
-    <hr>
-
-    <!-- Testimonials Section -->
-    <h1 class="my-4 text-center mt-5 mb-3">Client Testimonials</h1>
-    <div class="row">
-      <?php
-      $ret = "SELECT * FROM tms_feedback WHERE f_status = 'Published' ORDER BY RAND() LIMIT 3";
-      $stmt = $mysqli->prepare($ret);
-      $stmt->execute();
-      $res = $stmt->get_result();
-      while ($row = $res->fetch_object()) {
-      ?>
-        <div class="col-lg-6 mb-4">
-          <div class="card h-100">
-            <h4 class="card-header text-center"><?php echo $row->f_uname; ?></h4>
-            <div class="card-body">
-              <p class="card-text"><?php echo $row->f_content; ?></p>
-            </div>
-          </div>
-        </div>
-      <?php } ?>
-    </div>
-
   </div>
-  <!-- /.container -->
-
-  <!-- Footer -->
-  <?php include("vendor/inc/footer.php"); ?>
-  <!-- /.Footer -->
-
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom JavaScript -->
+  <script>
+    function scrollToContent() {
+      const container = document.querySelector('.content-container');
+      container.scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+  </script>
 
 </body>
 

@@ -52,8 +52,7 @@
 
                 // Update the password for the given email
                 $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-                $u_pwd = $hashedPassword; // Assign the hashed password to $u_pwd
-                $sql = "UPDATE tms_user SET u_pwd = '$u_pwd' WHERE u_email = '$u_email'";
+                $sql = "UPDATE tms_user SET u_pwd = '$hashedPassword' WHERE u_email = '$u_email'";
                 if ($conn->query($sql) === TRUE) {
                     $success_message = 'Password updated successfully. Your new password is: ' . $newPassword;
                     // Hide the form after password update
@@ -91,7 +90,7 @@
                     <label for="email">Email address:</label>
                     <input type="email" class="form-control" id="email" name="u_email" placeholder="Enter your email" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                <button type="submit" class="btn btn-success btn-block">Submit</button>
                 <a href="index.php" class="btn btn-link btn-block">Login</a>
             </form>
             <div id="successMessage" style="display: none;">
