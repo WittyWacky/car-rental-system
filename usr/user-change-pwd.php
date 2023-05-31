@@ -9,7 +9,7 @@ $aid = $_SESSION['u_id'];
 if (isset($_POST['update_password'])) {
   $u_id = $_SESSION['u_id'];
   $u_pwd = $_POST['u_pwd'];
-  $hashed_password = password_hash($u_pwd, PASSWORD_DEFAULT); // Hash the new password
+  $hashed_password = md5($u_pwd); // Hash the new password
 
   $query = "UPDATE tms_user SET u_pwd=? WHERE u_id=?";
   $stmt = $mysqli->prepare($query);

@@ -117,6 +117,7 @@
                 <option>Sports Car</option>
                 <option>Van</option>
                 <option>SUV</option>
+                <option>Sedan</option>
 
               </select>
             </div>

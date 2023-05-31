@@ -1,28 +1,28 @@
 <!--Server Side Scripting Language to inject login code-->
 <?php
-  session_start();
-  include('vendor/inc/config.php');
+session_start();
+include('vendor/inc/config.php');
 
-  if (isset($_POST['login'])) {
-    $u_email = $_POST['u_email'];
-    $u_pwd = $_POST['u_pwd'];
+if (isset($_POST['login'])) {
+  $u_email = $_POST['u_email'];
+  $u_pwd = md5($_POST['u_pwd']); // Use the same encryption method used during registration
 
-    $stmt = $mysqli->prepare("SELECT u_id, u_email, u_pwd FROM tms_user WHERE u_email = ?");
-    $stmt->bind_param('s', $u_email);
-    $stmt->execute();
-    $stmt->bind_result($u_id, $u_email, $hashed_password);
-    $stmt->fetch();
-    $stmt->close();
+  $stmt = $mysqli->prepare("SELECT u_id, u_email, u_pwd FROM tms_user WHERE u_email = ? AND u_pwd = ?");
+  $stmt->bind_param('ss', $u_email, $u_pwd);
+  $stmt->execute();
+  $stmt->bind_result($u_id, $u_email, $hashed_password);
+  $stmt->fetch();
+  $stmt->close();
 
-    // Verify the password
-    if ($hashed_password && password_verify($u_pwd, $hashed_password)) {
-        $_SESSION['u_id'] = $u_id;
-        $_SESSION['login'] = $u_email;
-        header("location: user-dashboard.php");
-        exit();
-    } else {
-        $error = "Invalid email or password.";
-    }
+  // Verify the password
+  if ($hashed_password) {
+    $_SESSION['u_id'] = $u_id;
+    $_SESSION['login'] = $u_email;
+    header("location: user-dashboard.php");
+    exit();
+  } else {
+    $error = "Invalid email or password.";
+  }
 }
 ?>
 <!--End Server Side Script Injection-->

@@ -51,7 +51,7 @@
                 }
 
                 // Update the password for the given email
-                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                $hashedPassword = md5($newPassword); // Generate MD5 hash for the new password
                 $sql = "UPDATE tms_user SET u_pwd = '$hashedPassword' WHERE u_email = '$u_email'";
                 if ($conn->query($sql) === TRUE) {
                     $success_message = 'Password updated successfully. Your new password is: ' . $newPassword;
